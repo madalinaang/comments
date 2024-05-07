@@ -1,0 +1,11 @@
+.comments {
+  padding: 3rem 25%;
+
+  @include small {
+    padding: 3rem 3%;
+  }
+
+  @include medium {
+    padding: 3rem 3%;
+  }
+}

@@ -1,0 +1,32 @@
+.score {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background-color: $very-light-gray;
+  border-radius: 0.5rem;
+  color: $moderate-blue;
+  font-weight: $font-weight-medium;
+
+  &.vertical {
+    flex-direction: column;
+    padding: 0.7rem 0.5rem;
+    width: 1.5rem;
+  }
+
+  &.horizontal {
+    flex-direction: row;
+    padding: 0.7rem;
+    width: fit-content;
+  }
+
+  .sign {
+    font-size: 110%;
+    font-weight: bold;
+    color: $light-grayish-blue;
+
+    &:hover {
+      color: $moderate-blue;
+      cursor: pointer;
+    }
+  }
+}

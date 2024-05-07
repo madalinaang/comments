@@ -1,0 +1,31 @@
+.comment-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+
+  .comment-action {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+
+    .action-img {
+      width: 0.8rem;
+    }
+
+    .action-name {
+      color: $moderate-blue;
+      font-weight: $font-weight-medium;
+
+      &.delete {
+        color: $soft-red;
+      }
+    }
+
+    &:hover {
+      opacity: 50%;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.error {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: $soft-red;
+  font-size: 110%;
+  font-weight: $font-weight-medium;
+}

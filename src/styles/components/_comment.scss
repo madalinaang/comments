@@ -1,0 +1,76 @@
+.comment {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  background-color: $white;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+
+  .desktop-comment {
+    display: block;
+
+    @include small {
+      display: none;
+    }
+
+    &.actions-desktop-comment {
+      flex: 1;
+    }
+  }
+
+  .left-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .top-bar {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .avatar {
+        width: 2rem;
+      }
+
+      h5 {
+        font-weight: $font-weight-bold;
+        color: $dark-blue;
+      }
+
+      .date {
+        color: $grayish-blue;
+      }
+
+      .you {
+        background-color: $moderate-blue;
+        color: white;
+        font-size: 90%;
+        font-weight: $font-weight-medium;
+        padding: 0.15rem 0.3rem;
+        border-radius: 0.1rem;
+        margin-left: -0.5rem;
+      }
+    }
+
+    p {
+      color: $grayish-blue;
+      line-height: 130%;
+
+      .replying-to {
+        font-weight: $font-weight-medium;
+        color: $moderate-blue;
+      }
+    }
+
+    .bottom-bar {
+      display: none;
+
+      @include small {
+        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}
