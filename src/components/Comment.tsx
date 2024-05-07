@@ -1,18 +1,25 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useChangeScore } from "../hooks/useChangeScore";
 import Score from "./Score";
 import CommentActions from "./CommentActions";
 import { useVerifyUser } from "../hooks/useVerifyUser";
+import { useUpdateComment } from "../hooks/useUpdateComment";
+import { useDeleteComment } from "../hooks/useDeleteComment";
 
 interface CommentProps {
   comment: Comm;
+  reply: () => void;
 }
 
-export default function Comment({ comment }: CommentProps) {
+export default function Comment({ comment, reply }: CommentProps) {
   const { mutateAsync: changeScore } = useChangeScore();
   const [score, setScore] = useState<number>(comment.score);
   const { mutateAsync: verifyUser } = useVerifyUser();
   const [yourComment, setYourComment] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [content, setContent] = useState<string>("");
+  const { mutateAsync: updateComment } = useUpdateComment();
+  const { mutateAsync: deleteComment } = useDeleteComment();
 
   const incrementScore = async () => {
     setScore((prev) => prev + 1);
@@ -32,6 +39,36 @@ export default function Comment({ comment }: CommentProps) {
 
     verify();
   }, [comment, verifyUser]);
+
+  const enableEdit = () => {
+    setEditMode(true);
+    setContent(
+      (comment.replyingTo ? "@" + comment.replyingTo + " " : "") +
+        comment.content
+    );
+  };
+
+  const onDelete = async () => {
+    await deleteComment(comment.id);
+  };
+
+  const onTextAreaChanged = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+    // setContent();
+  };
+
+  const onAreaChangedEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      editComment();
+    }
+  };
+
+  const editComment = async () => {
+    const value = content.replace("@" + comment.replyingTo + " ", "");
+    await updateComment({ id: comment.id, content: value });
+    setEditMode(false);
+  };
 
   return (
     <article className="comment">
@@ -58,15 +95,30 @@ export default function Comment({ comment }: CommentProps) {
               reply={!yourComment}
               remove={yourComment}
               edit={yourComment}
+              onEdit={enableEdit}
+              onDelete={onDelete}
+              onReply={reply}
             />
           </div>
         </div>
-        <p>
-          {comment.replyingTo && (
-            <span className="replying-to">@{comment.replyingTo} </span>
-          )}
-          {comment.content}
-        </p>
+        {editMode ? (
+          <div className="edit-content">
+            <textarea
+              value={content}
+              onChange={onTextAreaChanged}
+              onKeyDown={onAreaChangedEnter}
+            />
+            <button onClick={() => editComment()}>Update</button>
+          </div>
+        ) : (
+          <p>
+            {comment.replyingTo && (
+              <span className="replying-to">@{comment.replyingTo} </span>
+            )}
+            {comment.content}
+          </p>
+        )}
+
         <div className="bottom-bar">
           <Score
             score={score}
@@ -78,6 +130,9 @@ export default function Comment({ comment }: CommentProps) {
             reply={!yourComment}
             remove={yourComment}
             edit={yourComment}
+            onEdit={enableEdit}
+            onDelete={onDelete}
+            onReply={reply}
           />
         </div>
       </div>

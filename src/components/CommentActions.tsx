@@ -2,17 +2,23 @@ interface CommentActionProps {
   reply?: boolean;
   remove?: boolean;
   edit?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  onReply?: () => void;
 }
 
 export default function CommentActions({
   reply,
   remove,
   edit,
+  onEdit,
+  onDelete,
+  onReply,
 }: CommentActionProps) {
   return (
     <div className="comment-actions">
-      {reply && (
-        <div className="comment-action">
+      {reply && onReply && (
+        <div className="comment-action" onClick={() => onReply()}>
           <img
             className="action-img"
             src={process.env.PUBLIC_URL + "/images/icon-reply.svg"}
@@ -21,8 +27,8 @@ export default function CommentActions({
           <p className="action-name">Reply</p>
         </div>
       )}
-      {remove && (
-        <div className="comment-action">
+      {remove && onDelete && (
+        <div className="comment-action" onClick={() => onDelete()}>
           <img
             className="action-img"
             src={process.env.PUBLIC_URL + "/images/icon-delete.svg"}
@@ -31,8 +37,8 @@ export default function CommentActions({
           <p className="action-name delete">Delete</p>
         </div>
       )}
-      {edit && (
-        <div className="comment-action">
+      {edit && onEdit && (
+        <div className="comment-action" onClick={() => onEdit()}>
           <img
             className="action-img"
             src={process.env.PUBLIC_URL + "/images/icon-edit.svg"}
